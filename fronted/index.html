@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>秒杀系统</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="logo">⚡ 秒杀系统</div>
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('login')">登录</button>
+        <button class="tab" onclick="switchTab('register')">注册</button>
+      </div>
+
+      <!-- 登录表单 -->
+      <div id="loginForm" class="form">
+        <div class="input-group">
+          <span class="icon">👤</span>
+          <input id="loginUsername" type="text" placeholder="请输入用户名" />
+        </div>
+        <div class="input-group">
+          <span class="icon">🔒</span>
+          <input id="loginPassword" type="password" placeholder="请输入密码" />
+        </div>
+        <button class="btn" onclick="login()">登 录</button>
+      </div>
+
+      <!-- 注册表单 -->
+      <div id="registerForm" class="form" style="display:none">
+        <div class="input-group">
+          <span class="icon">👤</span>
+          <input id="regUsername" type="text" placeholder="请输入用户名" />
+        </div>
+        <div class="input-group">
+          <span class="icon">🔒</span>
+          <input id="regPassword" type="password" placeholder="请输入密码" />
+        </div>
+        <div class="input-group">
+          <span class="icon">📱</span>
+          <input id="regPhone" type="text" placeholder="请输入手机号（可选）" />
+        </div>
+        <button class="btn" onclick="register()">注 册</button>
+      </div>
+
+      <!-- 结果提示 -->
+      <div id="toast" class="toast"></div>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
