@@ -60,3 +60,7 @@ CREATE TABLE IF NOT EXISTS `seckill_order` (
   UNIQUE KEY `uk_user_product` (`user_id`, `product_id`),
   KEY `idx_order_id` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='秒杀订单表';
+
+INSERT INTO product (id, name, stock, price)
+VALUES (1001, '秒杀商品A', 100, 9.90)
+ON DUPLICATE KEY UPDATE name = VALUES(name);
