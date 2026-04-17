@@ -1,6 +1,38 @@
 version: "3.9"
 
 services:
+  nacos:
+    image: nacos/nacos-server:v2.4.3
+    container_name: seckill-nacos
+    environment:
+      - MODE=standalone
+      - SPRING_DATASOURCE_PLATFORM=mysql
+      - MYSQL_SERVICE_HOST=mysql
+      - MYSQL_SERVICE_PORT=3306
+      - MYSQL_SERVICE_USER=root
+      - MYSQL_SERVICE_PASSWORD=123456
+      - MYSQL_SERVICE_DB_NAME=nacos_config
+      - JVM_XMS=512m
+      - JVM_XMX=512m
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - nacos_logs:/home/nacos/logs
+
+  sentinel:
+    image: bladex/sentinel-dashboard:latest
+    container_name: seckill-sentinel
+    ports:
+      - "8080:8080"
+    environment:
+      - SENTINEL_API_PORT=8719
+    depends_on:
+      - nacos
+
   mysql:
     image: mysql:8.0
     container_name: seckill-mysql
@@ -48,6 +80,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+      nacos:
+        condition: service_started
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/seckill_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
       SPRING_DATASOURCE_USERNAME: root
@@ -56,6 +90,8 @@ services:
       APP_JWT_EXPIRE-MS: 86400000
       SERVER_PORT: 8080
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      NACOS_SERVER_ADDR: nacos:8848
+      SENTINEL_DASHBOARD: sentinel:8080
     ports:
       - "8081:8080"
 
@@ -67,6 +103,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+      nacos:
+        condition: service_started
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/seckill_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
       SPRING_DATASOURCE_USERNAME: root
@@ -75,6 +113,8 @@ services:
       APP_JWT_EXPIRE-MS: 86400000
       SERVER_PORT: 8080
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      NACOS_SERVER_ADDR: nacos:8848
+      SENTINEL_DASHBOARD: sentinel:8080
     ports:
       - "8082:8080"
 
@@ -92,3 +132,4 @@ services:
 
 volumes:
   mysql_data:
+  nacos_logs:

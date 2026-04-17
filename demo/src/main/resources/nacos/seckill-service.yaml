@@ -1,0 +1,61 @@
+# Nacos 配置示例 - seckill-service.yaml
+# 将此配置发布到 Nacos 配置中心
+
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/seckill_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:mt127715318}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: seckill-order-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.example.demo.order.mq
+
+# 应用配置
+app:
+  config:
+    test:
+      value: ${APP_TEST_VALUE:默认值}
+    seckill:
+      limit: ${APP_SECKILL_LIMIT:100}
+    message:
+      welcome: ${APP_WELCOME_MESSAGE:欢迎光临}
+  
+  jwt:
+    secret: ${JWT_SECRET:replace-with-at-least-32-characters-secret-key!!}
+    expire-ms: ${JWT_EXPIRE_MS:86400000}
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.example.demo: ${LOG_LEVEL:INFO}
+    com.example.demo.order: ${LOG_LEVEL:INFO}
+    com.example.demo.product: ${LOG_LEVEL:INFO}
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n"

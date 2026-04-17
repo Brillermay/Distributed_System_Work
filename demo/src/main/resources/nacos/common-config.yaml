@@ -1,0 +1,28 @@
+# Nacos 共享配置 - common-config.yaml
+# 所有服务共享的配置
+
+# 线程池配置
+thread:
+  pool:
+    core-size: 10
+    max-size: 50
+    queue-capacity: 100
+    keep-alive-seconds: 60
+
+# 超时配置
+timeout:
+  connect: 5000
+  read: 10000
+  write: 10000
+
+# 重试配置
+retry:
+  max-attempts: 3
+  initial-interval: 1000
+  multiplier: 2.0
+
+# 缓存配置
+cache:
+  enabled: true
+  default-ttl: 300
+  max-size: 10000

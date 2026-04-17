@@ -1,4 +1,27 @@
 spring:
+  application:
+    name: seckill-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:public}
+        group: DEFAULT_GROUP
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:public}
+        group: DEFAULT_GROUP
+        file-extension: yaml
+        shared-configs:
+          - data-id: common-config.yaml
+            refresh: true
+        refresh-enabled: true
+  config:
+    import:
+      - optional:nacos:seckill-service.yaml
+      - optional:nacos:common-config.yaml
+  profiles:
+    active: dev
   datasource:
     url: jdbc:mysql://localhost:3306/seckill_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: root
@@ -30,3 +53,16 @@ app:
   jwt:
     secret: "replace-with-at-least-32-characters-secret-key!!"
     expire-ms: 86400000
+
+# Sentinel 配置
+sentinel:
+  transport:
+    dashboard: ${SENTINEL_DASHBOARD:localhost:8080}
+    port: 8719
+  datasource:
+    ds1:
+      nacos:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        dataId: ${spring.application.name}-sentinel
+        groupId: DEFAULT_GROUP
+        rule-type: flow

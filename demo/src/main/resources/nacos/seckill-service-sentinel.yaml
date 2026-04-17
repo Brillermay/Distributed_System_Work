@@ -1,0 +1,31 @@
+# Sentinel 流控规则配置 - 发布到 Nacos
+# dataId: seckill-service-sentinel
+# 用于动态管理流控规则
+
+[{
+  "resource": "/api/seckill/**",
+  "limitApp": "default",
+  "grade": 1,
+  "count": 10,
+  "strategy": 0,
+  "controlBehavior": 0,
+  "warmUpPeriodSec": 10,
+  "maxQueueingTimeMs": 500
+},
+{
+  "resource": "/api/order/**",
+  "limitApp": "default",
+  "grade": 1,
+  "count": 50,
+  "strategy": 0,
+  "controlBehavior": 0
+},
+{
+  "resource": "/api/auth/login",
+  "limitApp": "default",
+  "grade": 1,
+  "count": 20,
+  "strategy": 0,
+  "controlBehavior": 2,
+  "maxQueueingTimeMs": 10000
+}]
